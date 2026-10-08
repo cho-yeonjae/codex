@@ -2,20 +2,26 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <link rel="stylesheet" href="styles.css" />
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ar.js@3.4.5/aframe/build/aframe-ar.min.js"></script>
   </head>
   <body>
-    <main class="afterimage" aria-hidden="true">
-      <canvas class="motion-canvas"></canvas>
-      <div class="haze haze--left"></div>
-      <div class="haze haze--right"></div>
-      <div class="trail trail--cyan"></div>
-      <div class="trail trail--amber"></div>
-      <div class="ring"><div class="ring__core"></div></div>
-      <div class="cursor-light"></div>
-      <div class="grain"></div>
-    </main>
+    <a-scene embedded vr-mode-ui="enabled: false" renderer="antialias: true; alpha: true; colorManagement: true" arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix;">
+      <a-assets timeout="12000">
+        <img id="night-sky" src="assets/night-sky.png" crossorigin="anonymous" />
+        <img id="shooting-star" src="assets/shooting-star.png" crossorigin="anonymous" />
+      </a-assets>
+      <a-marker id="sky-marker" preset="hiro" emitevents="true">
+        <a-entity id="sky-world" visible="false">
+          <a-plane material="src: #night-sky; shader: flat" width="2.4" height="1.42" position="0 0 0.01"></a-plane>
+          <a-entity id="twinkling-stars"></a-entity>
+          <a-plane id="meteor" material="src: #shooting-star; transparent: true; alphaTest: 0.04; shader: flat" width="0.98" height="0.48" position="0.93 0.43 0.08"></a-plane>
+        </a-entity>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
     <script src="script.js"></script>
   </body>
 </html>
