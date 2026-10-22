@@ -40,7 +40,11 @@
       {transform:hero(-35,19.7,.9),opacity:.95,filter:glow(.95),offset:.7},
       {transform:hero(-42,23.6,.93),opacity:0,filter:glow(.9)}
     ],{duration:14000,fill:'forwards',easing:'linear'}));streaks.forEach((s,i)=>{s.getAnimations().forEach(a=>a.cancel());s.animate([{transform:line(0,0),opacity:0},{transform:line(-12,6.75),opacity:.9,offset:.2},{transform:line(-25,14),opacity:.78,offset:.48},{transform:line(-35,19.7),opacity:.66,offset:.7},{transform:line(-42,23.6),opacity:0}],{duration:14000,delay:i*90,fill:'forwards',easing:'linear'})})}
-    window.playMeteor=playMeteor;if(window.__meteorQueued){window.__meteorQueued=false;playMeteor()}
+    window.playMeteor=playMeteor;
+    const marker=document.querySelector('#marker');const scene=document.querySelector('a-scene');
+    marker.addEventListener('markerFound',playMeteor);scene.addEventListener('markerFound',playMeteor);
+    let markerWasVisible=false;function watchMarker(){const visible=Boolean(marker.object3D&&marker.object3D.visible);if(visible&&!markerWasVisible)playMeteor();markerWasVisible=visible;requestAnimationFrame(watchMarker)}watchMarker();
+    if(window.__meteorQueued){window.__meteorQueued=false;playMeteor()}
   </script>
 </body>
 </html>
