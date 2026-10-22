@@ -55,6 +55,10 @@
     .slow-zone::before{border-color:rgba(255,249,228,.70);opacity:.96}
     .slow-zone::after{border-color:rgba(255,250,232,.48);opacity:.82}
   </style>
+  <style>
+    /* The animated script assigns each image a concrete valid CSS width. */
+    .streak{width:var(--len)}
+  </style>
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   <script src="https://raw.githack.com/AR-js-org/AR.js/3.4.8/aframe/build/aframe-ar.js"></script>
   <script>AFRAME.registerComponent('meteor-trigger',{init:function(){const fire=()=>{if(typeof window.playMeteor==='function')window.playMeteor();else window.__meteorQueued=true};this.el.addEventListener('markerFound',fire);this.el.sceneEl.addEventListener('markerFound',fire)}})</script>
@@ -82,7 +86,7 @@
       {transform:hero(-14,7.9,.85),opacity:.97,filter:glow(1.04),offset:.42},
       {transform:hero(-20,11.2,.88),opacity:.95,filter:glow(.95),offset:.47},
       {transform:hero(-45,25.3,.93),opacity:0,filter:glow(.9)}
-    ],{duration:11000,fill:'forwards',easing:'linear'}));const slowFrames=[{transform:line(0,0),opacity:0},{transform:line(-10,5.6),opacity:.9,offset:.15},{transform:line(-14,7.9),opacity:.78,offset:.42},{transform:line(-20,11.2),opacity:.66,offset:.47},{transform:line(-45,25.3),opacity:0}];streaks.forEach((s,i)=>{s.getAnimations().forEach(a=>a.cancel());const isSlow=s.classList.contains('slow');const dx=Number(s.dataset.dx||-45);const dy=Number(s.dataset.dy||25.3);const frames=isSlow?slowFrames:[{transform:line(0,0),opacity:0},{transform:line(dx*.12,dy*.12),opacity:.9,offset:.08},{transform:line(dx,dy),opacity:0}];s.animate(frames,{duration:isSlow?11000:1350,delay:i*55,iterations:isSlow?1:3,fill:'forwards',easing:'linear'})})}
+    ],{duration:11000,fill:'forwards',easing:'linear'}));const slowFrames=[{transform:line(0,0),opacity:0},{transform:line(-10,5.6),opacity:.9,offset:.15},{transform:line(-14,7.9),opacity:.78,offset:.42},{transform:line(-20,11.2),opacity:.66,offset:.47},{transform:line(-45,25.3),opacity:0}];streaks.forEach((s,i)=>{s.getAnimations().forEach(a=>a.cancel());const isSlow=s.classList.contains('slow');const dx=Number(s.dataset.dx||-45);const dy=Number(s.dataset.dy||25.3);const length=Number.parseFloat(s.style.getPropertyValue('--len'))||8;const scale=[.58,.67,.76,.88,.71,.82,.63][i%7];s.style.width=`${(length*2*scale).toFixed(2)}cqw`;const frames=isSlow?slowFrames:[{transform:line(0,0),opacity:0},{transform:line(dx*.12,dy*.12),opacity:.9,offset:.08},{transform:line(dx,dy),opacity:0}];s.animate(frames,{duration:isSlow?11000:1350,delay:i*55,iterations:isSlow?1:3,fill:'forwards',easing:'linear'})})}
     window.playMeteor=playMeteor;
     const marker=document.querySelector('#marker');const scene=document.querySelector('a-scene');
     marker.addEventListener('markerFound',playMeteor);scene.addEventListener('markerFound',playMeteor);
