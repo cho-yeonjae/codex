@@ -37,7 +37,7 @@
   <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3" renderer="alpha:true" vr-mode-ui="enabled:false"><a-marker preset="hiro" id="marker" emitevents="true" meteor-trigger><a-entity></a-entity></a-marker><a-entity camera></a-entity></a-scene>
   <script>
     const m=document.querySelector('#meteor');const streaks=[...document.querySelectorAll('.streak')];const artwork=document.querySelector('.artwork');let last=0;
-    const glow=v=>'brightness('+(1.25+v*.22)+') drop-shadow(0 0 12px rgba(255,218,122,.72))';
+    const glow=()=> 'none';
     function playMeteor(){const now=performance.now();if(now-last<900)return;last=now;const u=artwork.clientWidth/100;const hero=(x,y,s)=>`translate(${x*u}px,${y*u}px) scale(${s})`;const line=(x,y)=>`translate(${x*u}px,${y*u}px) rotate(-28deg)`;m.getAnimations().forEach(a=>a.cancel());m.style.opacity='1';m.style.transform=hero(0,0,.78);requestAnimationFrame(()=>m.animate([
       {transform:hero(0,0,.78),opacity:0,filter:glow(.9)},
       {transform:hero(-10,5.6,.82),opacity:.98,filter:glow(.94),offset:.15},
