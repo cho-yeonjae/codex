@@ -42,6 +42,13 @@
     .slow-zone::before{inset:-1px;border:1px solid rgba(255,249,228,.29);opacity:.58;transform:rotate(-1.2deg);-webkit-mask:repeating-conic-gradient(#000 0deg 6deg,transparent 6.8deg 10deg);mask:repeating-conic-gradient(#000 0deg 6deg,transparent 6.8deg 10deg);filter:drop-shadow(0 0 1px rgba(255,244,211,.20))}
     .slow-zone::after{inset:2px;border:1px solid rgba(255,250,232,.18);opacity:.40;transform:rotate(1.7deg);-webkit-mask:repeating-conic-gradient(#000 0deg 4deg,transparent 4.8deg 8deg);mask:repeating-conic-gradient(#000 0deg 4deg,transparent 4.8deg 8deg)}
   </style>
+  <style>
+    /* Keep the visible effects above the sky, but below the terrain cutout. */
+    .meteor-field{z-index:11}
+    .slow-zone{z-index:11}
+    .slow-zone::before{border-color:rgba(255,249,228,.52);opacity:.86}
+    .slow-zone::after{border-color:rgba(255,250,232,.34);opacity:.66}
+  </style>
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   <script src="https://raw.githack.com/AR-js-org/AR.js/3.4.8/aframe/build/aframe-ar.js"></script>
   <script>AFRAME.registerComponent('meteor-trigger',{init:function(){const fire=()=>{if(typeof window.playMeteor==='function')window.playMeteor();else window.__meteorQueued=true};this.el.addEventListener('markerFound',fire);this.el.sceneEl.addEventListener('markerFound',fire)}})</script>
@@ -69,7 +76,7 @@
       {transform:hero(-14,7.9,.85),opacity:.97,filter:glow(1.04),offset:.42},
       {transform:hero(-20,11.2,.88),opacity:.95,filter:glow(.95),offset:.47},
       {transform:hero(-45,25.3,.93),opacity:0,filter:glow(.9)}
-    ],{duration:11000,fill:'forwards',easing:'linear'}));const slowFrames=[{transform:line(0,0),opacity:0},{transform:line(-10,5.6),opacity:.9,offset:.15},{transform:line(-14,7.9),opacity:.78,offset:.42},{transform:line(-20,11.2),opacity:.66,offset:.47},{transform:line(-45,25.3),opacity:0}];streaks.forEach((s,i)=>{s.getAnimations().forEach(a=>a.cancel());const isSlow=s.classList.contains('slow');const dx=Number(s.dataset.dx||-45);const dy=Number(s.dataset.dy||25.3);const frames=isSlow?slowFrames:[{transform:line(0,0),opacity:0},{transform:line(dx*.12,dy*.12),opacity:.9,offset:.08},{transform:line(dx,dy),opacity:0}];s.animate(frames,{duration:isSlow?11000:2400,delay:i*55,fill:'forwards',easing:'linear'})})}
+    ],{duration:11000,fill:'forwards',easing:'linear'}));const slowFrames=[{transform:line(0,0),opacity:0},{transform:line(-10,5.6),opacity:.9,offset:.15},{transform:line(-14,7.9),opacity:.78,offset:.42},{transform:line(-20,11.2),opacity:.66,offset:.47},{transform:line(-45,25.3),opacity:0}];streaks.forEach((s,i)=>{s.getAnimations().forEach(a=>a.cancel());const isSlow=s.classList.contains('slow');const dx=Number(s.dataset.dx||-45);const dy=Number(s.dataset.dy||25.3);const frames=isSlow?slowFrames:[{transform:line(0,0),opacity:0},{transform:line(dx*.12,dy*.12),opacity:.9,offset:.08},{transform:line(dx,dy),opacity:0}];s.animate(frames,{duration:isSlow?11000:1350,delay:i*55,fill:'forwards',easing:'linear'})})}
     window.playMeteor=playMeteor;
     const marker=document.querySelector('#marker');const scene=document.querySelector('a-scene');
     marker.addEventListener('markerFound',playMeteor);scene.addEventListener('markerFound',playMeteor);
