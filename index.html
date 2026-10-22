@@ -19,7 +19,7 @@
   </style>
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   <script src="https://raw.githack.com/AR-js-org/AR.js/3.4.8/aframe/build/aframe-ar.js"></script>
-  <script>AFRAME.registerComponent('meteor-trigger',{init:function(){this.el.sceneEl.addEventListener('markerFound',function(){document.dispatchEvent(new CustomEvent('meteor-found'))})}})</script>
+  <script>AFRAME.registerComponent('meteor-trigger',{init:function(){const fire=()=>{if(typeof window.playMeteor==='function')window.playMeteor();else window.__meteorQueued=true};this.el.addEventListener('markerFound',fire);this.el.sceneEl.addEventListener('markerFound',fire)}})</script>
 </head>
 <body>
   <div class="artwork">
@@ -31,16 +31,16 @@
   </div>
   <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3" renderer="alpha:true" vr-mode-ui="enabled:false"><a-marker preset="hiro" id="marker" emitevents="true" meteor-trigger><a-entity></a-entity></a-marker><a-entity camera></a-entity></a-scene>
   <script>
-    const m=document.querySelector('#meteor');const streaks=[...document.querySelectorAll('.streak')];let last=0;
+    const m=document.querySelector('#meteor');const streaks=[...document.querySelectorAll('.streak')];const artwork=document.querySelector('.artwork');let last=0;
     const glow=v=>'brightness('+v+') drop-shadow(0 0 8px rgba(255,212,112,.38))';
-    function playMeteor(){const now=performance.now();if(now-last<900)return;last=now;m.getAnimations().forEach(a=>a.cancel());m.style.opacity='1';m.style.transform='translate(0,0) scale(.78)';requestAnimationFrame(()=>m.animate([
-      {transform:'translate(0,0) scale(.78)',opacity:0,filter:glow(.9)},
-      {transform:'translate(-12cqw,6.75cqw) scale(.82)',opacity:.98,filter:glow(.94),offset:.2},
-      {transform:'translate(-25cqw,14cqw) scale(.86)',opacity:.96,filter:glow(1.04),offset:.48},
-      {transform:'translate(-35cqw,19.7cqw) scale(.9)',opacity:.95,filter:glow(.95),offset:.7},
-      {transform:'translate(-42cqw,23.6cqw) scale(.93)',opacity:0,filter:glow(.9)}
-    ],{duration:14000,fill:'forwards',easing:'linear'}));streaks.forEach((s,i)=>{s.getAnimations().forEach(a=>a.cancel());s.animate([{transform:'translate(0,0) rotate(-16deg)',opacity:0},{transform:'translate(-12cqw,6.75cqw) rotate(-16deg)',opacity:.9,offset:.2},{transform:'translate(-25cqw,14cqw) rotate(-16deg)',opacity:.78,offset:.48},{transform:'translate(-35cqw,19.7cqw) rotate(-16deg)',opacity:.66,offset:.7},{transform:'translate(-42cqw,23.6cqw) rotate(-16deg)',opacity:0}],{duration:14000,delay:i*90,fill:'forwards',easing:'linear'})})}
-    document.addEventListener('meteor-found',playMeteor)
+    function playMeteor(){const now=performance.now();if(now-last<900)return;last=now;const u=artwork.clientWidth/100;const hero=(x,y,s)=>`translate(${x*u}px,${y*u}px) scale(${s})`;const line=(x,y)=>`translate(${x*u}px,${y*u}px) rotate(-16deg)`;m.getAnimations().forEach(a=>a.cancel());m.style.opacity='1';m.style.transform=hero(0,0,.78);requestAnimationFrame(()=>m.animate([
+      {transform:hero(0,0,.78),opacity:0,filter:glow(.9)},
+      {transform:hero(-12,6.75,.82),opacity:.98,filter:glow(.94),offset:.2},
+      {transform:hero(-25,14,.86),opacity:.96,filter:glow(1.04),offset:.48},
+      {transform:hero(-35,19.7,.9),opacity:.95,filter:glow(.95),offset:.7},
+      {transform:hero(-42,23.6,.93),opacity:0,filter:glow(.9)}
+    ],{duration:14000,fill:'forwards',easing:'linear'}));streaks.forEach((s,i)=>{s.getAnimations().forEach(a=>a.cancel());s.animate([{transform:line(0,0),opacity:0},{transform:line(-12,6.75),opacity:.9,offset:.2},{transform:line(-25,14),opacity:.78,offset:.48},{transform:line(-35,19.7),opacity:.66,offset:.7},{transform:line(-42,23.6),opacity:0}],{duration:14000,delay:i*90,fill:'forwards',easing:'linear'})})}
+    window.playMeteor=playMeteor;if(window.__meteorQueued){window.__meteorQueued=false;playMeteor()}
   </script>
 </body>
 </html>
