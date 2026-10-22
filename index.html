@@ -15,6 +15,7 @@
     .meteor-group{position:absolute;width:min(33.6cqw,486px);aspect-ratio:2.37/1;left:50cqw;top:8cqw;opacity:0;pointer-events:none;z-index:4;mix-blend-mode:screen}
     .meteor-field{position:absolute;inset:0;z-index:4;pointer-events:none;clip-path:polygon(0 0,100% 0,100% 71%,96% 72%,90% 75%,84% 74%,79% 72%,73% 72%,67% 77%,61% 77%,55% 78%,50% 80%,45% 78%,40% 75%,35% 76%,29% 75%,24% 70%,18% 70%,14% 68%,10% 59%,7% 52%,4% 54%,0 47%)}
     .foreground-terrain{position:absolute;inset:0;z-index:6;pointer-events:none;background:url('assets/night-sky.png') center/cover no-repeat;clip-path:polygon(0 47%,4% 54%,7% 52%,10% 59%,14% 68%,18% 70%,24% 70%,29% 75%,35% 76%,40% 75%,45% 78%,50% 80%,55% 78%,61% 77%,67% 77%,73% 72%,79% 72%,84% 74%,90% 75%,96% 72%,100% 71%,100% 100%,0 100%)}
+    .terrain-mask{position:absolute;inset:0;width:100%;height:100%;z-index:10;display:block;pointer-events:none}
     .hero-head{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 7px rgba(255,231,153,.85))}
     .streaks{position:absolute;inset:0;z-index:3;pointer-events:none}.streak{position:absolute;left:var(--x);top:var(--y);width:calc(var(--len)*1.35);height:auto;opacity:0;transform:rotate(-28deg);transform-origin:10% 75%;mix-blend-mode:screen;filter:drop-shadow(0 0 3px rgba(255,226,145,.62))}
     a-scene{position:fixed!important;inset:0!important;z-index:1!important;pointer-events:none!important}a-scene canvas{opacity:0!important}
@@ -38,6 +39,7 @@
     <div class="meteor-group" id="meteor"><img class="hero-head" src="assets/center-meteor-v2.png"></div>
     </div>
     <div class="foreground-terrain"></div>
+    <svg class="terrain-mask" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><defs><clipPath id="terrain-shape"><path d="M0 418 L30 486 L60 512 L100 535 L130 520 L160 540 L200 575 L250 640 L290 670 L340 655 L390 600 L420 535 L450 625 L500 660 L570 680 L620 675 L680 690 L740 686 L800 703 L870 702 L930 685 L1000 684 L1070 688 L1140 670 L1200 645 L1280 640 L1350 655 L1410 675 L1450 678 L1500 652 L1530 620 L1560 650 L1600 645 L1600 900 L0 900 Z"/></clipPath></defs><image href="assets/night-sky.png" x="0" y="0" width="1600" height="900" preserveAspectRatio="xMidYMid slice" clip-path="url(#terrain-shape)"/></svg>
   </div>
   <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3" renderer="alpha:true" vr-mode-ui="enabled:false"><a-marker preset="hiro" id="marker" emitevents="true" meteor-trigger><a-entity></a-entity></a-marker><a-entity camera></a-entity></a-scene>
   <script>
