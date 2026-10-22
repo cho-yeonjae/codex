@@ -25,6 +25,23 @@
     /* 산 능선 아래는 별똥별이 닿는 즉시 가려지는 하늘 영역 */
     .streaks{clip-path:polygon(0 0,100% 0,100% 71%,96% 72%,90% 75%,84% 74%,79% 72%,73% 72%,67% 77%,61% 77%,55% 78%,50% 80%,45% 78%,40% 75%,35% 76%,29% 75%,24% 70%,18% 70%,14% 68%,10% 59%,7% 52%,4% 54%,0 47%)}
   </style>
+  <style>
+    /* Small meteors use varied scales and remain below the hero meteor's size. */
+    .streak{--meteor-size:1;width:calc(var(--len) * 1.35 * var(--meteor-size));height:auto}
+    .streak:nth-child(7n + 1){--meteor-size:.58}
+    .streak:nth-child(7n + 2){--meteor-size:.67}
+    .streak:nth-child(7n + 3){--meteor-size:.76}
+    .streak:nth-child(7n + 4){--meteor-size:.88}
+    .streak:nth-child(7n + 5){--meteor-size:.71}
+    .streak:nth-child(7n + 6){--meteor-size:.82}
+    .streak:nth-child(7n){--meteor-size:.63}
+
+    /* A quiet, broken brush-line marks the slow-motion boundary. */
+    .slow-zone{border:0;box-shadow:none}
+    .slow-zone::before,.slow-zone::after{content:'';position:absolute;border-radius:inherit;pointer-events:none}
+    .slow-zone::before{inset:-1px;border:1px solid rgba(255,249,228,.29);opacity:.58;transform:rotate(-1.2deg);-webkit-mask:repeating-conic-gradient(#000 0deg 6deg,transparent 6.8deg 10deg);mask:repeating-conic-gradient(#000 0deg 6deg,transparent 6.8deg 10deg);filter:drop-shadow(0 0 1px rgba(255,244,211,.20))}
+    .slow-zone::after{inset:2px;border:1px solid rgba(255,250,232,.18);opacity:.40;transform:rotate(1.7deg);-webkit-mask:repeating-conic-gradient(#000 0deg 4deg,transparent 4.8deg 8deg);mask:repeating-conic-gradient(#000 0deg 4deg,transparent 4.8deg 8deg)}
+  </style>
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   <script src="https://raw.githack.com/AR-js-org/AR.js/3.4.8/aframe/build/aframe-ar.js"></script>
   <script>AFRAME.registerComponent('meteor-trigger',{init:function(){const fire=()=>{if(typeof window.playMeteor==='function')window.playMeteor();else window.__meteorQueued=true};this.el.addEventListener('markerFound',fire);this.el.sceneEl.addEventListener('markerFound',fire)}})</script>
