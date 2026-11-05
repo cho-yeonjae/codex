@@ -11,8 +11,4 @@ body.marker-active .slow-zone{opacity:1;transform:scale(1)}
 .flow-hero{position:absolute;left:var(--x);top:var(--y);width:min(28cqw,405px);aspect-ratio:2.37/1;object-fit:contain;opacity:0;mix-blend-mode:screen;filter:drop-shadow(0 0 5px rgba(255,233,166,.58))}
 .ar-debug{position:fixed;right:14px;bottom:14px;z-index:30;min-width:128px;padding:9px 10px;border:1px solid rgba(214,235,255,.2);border-radius:10px;background:rgba(3,14,36,.58);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);color:rgba(232,244,255,.9);font:11px/1.55 system-ui,sans-serif;letter-spacing:.02em;pointer-events:none;user-select:none;box-shadow:0 5px 18px rgba(0,0,0,.18)}
 .ar-debug strong{display:block;font-size:12px;font-weight:600}.ar-debug .ok{color:#dfffd1}.ar-debug .wait{color:#ffd7a1}.ar-debug .lost{color:#ffb8bd}
-/* Temporary camera-first debugging view: webcam feed sits above the artwork. */
-body.camera-feed-only .artwork,body.camera-feed-only .ar-debug{visibility:hidden}
-body.camera-feed-only a-scene{z-index:40!important;pointer-events:none!important}
-body.camera-feed-only a-scene canvas{opacity:0!important}
-body.camera-feed-only video{display:block!important;visibility:visible!important;opacity:1!important;position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;z-index:41!important;object-fit:cover!important;background:#06122e!important}
+body.mouse-lens-mode .ar-debug{border-color:rgba(220,246,255,.48)}
