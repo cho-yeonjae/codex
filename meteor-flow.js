@@ -6,7 +6,6 @@
   const artwork=document.querySelector('.artwork');
   if(!field||!marker||!scene)return;
   const flow=document.createElement('div');flow.className='meteor-flow';field.append(flow);
-  const debug=document.createElement('aside');debug.className='ar-debug';debug.setAttribute('aria-live','polite');document.body.append(debug);
   const fast=[['12cqw','7cqw','12cqw'],['28cqw','17cqw','9cqw'],['18cqw','35cqw','10cqw'],['76cqw','6cqw','12cqw'],['85cqw','18cqw','10cqw'],['74cqw','36cqw','11cqw'],['88cqw','42cqw','9cqw'],['47cqw','5cqw','8cqw'],['10cqw','24cqw','8cqw'],['90cqw','29cqw','10cqw']];
   const lensRadius=10;
   let markerVisible=false,mouseLensMode=false,cycle=0,lastSeen=0,lensCenter={x:50,y:28};
@@ -51,6 +50,5 @@
   const watch=()=>{if(!mouseLensMode){const visible=Boolean(marker.object3D&&marker.object3D.visible);if(visible)seen();else if(markerVisible&&performance.now()-lastSeen>2800)setMarker(false)}requestAnimationFrame(watch)};watch();
   artwork.addEventListener('pointermove',event=>{if(!mouseLensMode)return;const rect=artwork.getBoundingClientRect();placeLens((event.clientX-rect.left)/rect.width*100,(event.clientY-rect.top)/rect.width*100)});
   window.addEventListener('keydown',event=>{if(event.key.toLowerCase()!=='a'||event.repeat)return;mouseLensMode=!mouseLensMode;document.body.classList.toggle('mouse-lens-mode',mouseLensMode);if(mouseLensMode){placeLens(50,28);setMarker(true)}else{setMarker(false)}});
-  const renderDebug=()=>{if(mouseLensMode){debug.innerHTML='<strong class="ok">마우스 렌즈</strong><div>A 키로 AR로 전환</div><div>렌즈 켜짐</div>';return}const age=lastSeen?performance.now()-lastSeen:Infinity;const state=age<350?['인식됨','ok']:age<2800?['신호 약함','wait']:['미인식','lost'];debug.innerHTML=`<strong class="${state[1]}">AR ${state[0]}</strong><div>마지막 인식 ${Number.isFinite(age)?(age/1000).toFixed(1)+'초 전':'없음'}</div><div>렌즈 ${markerVisible?'켜짐':'꺼짐'} · A: 마우스</div>`};setInterval(renderDebug,160);renderDebug();
   fastCycle();setInterval(fastCycle,2300);
 })();
