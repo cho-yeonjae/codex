@@ -13,5 +13,6 @@ body.marker-active .slow-zone{opacity:1;transform:scale(1)}
 .ar-debug strong{display:block;font-size:12px;font-weight:600}.ar-debug .ok{color:#dfffd1}.ar-debug .wait{color:#ffd7a1}.ar-debug .lost{color:#ffb8bd}
 /* Temporary camera-first debugging view: webcam feed sits above the artwork. */
 body.camera-feed-only .artwork,body.camera-feed-only .ar-debug{visibility:hidden}
-body.camera-feed-only a-scene{z-index:40!important;pointer-events:auto!important}
-body.camera-feed-only a-scene canvas{opacity:1!important}
+body.camera-feed-only a-scene{z-index:40!important;pointer-events:none!important}
+body.camera-feed-only a-scene canvas{opacity:0!important}
+body.camera-feed-only video{display:block!important;visibility:visible!important;opacity:1!important;position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;z-index:41!important;object-fit:cover!important;background:#06122e!important}
