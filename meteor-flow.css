@@ -15,3 +15,6 @@ body.mouse-lens-mode .ar-debug{border-color:rgba(220,246,255,.48)}
 /* AR tracking continues in the background; its camera surface never covers the artwork. */
 body:not(.camera-feed-only) a-scene{z-index:1!important;pointer-events:none!important}
 body:not(.camera-feed-only) a-scene canvas,body:not(.camera-feed-only) video{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+/* Some browsers promote webcam video to its own compositing layer. Keep the artwork above it. */
+body:not(.camera-feed-only) .artwork{z-index:100!important}
+body:not(.camera-feed-only) .ar-debug{z-index:110!important}
