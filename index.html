@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="meteor-flow.css">
   <style>
     html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#06122e}
     body{display:grid;place-items:center}
@@ -114,5 +115,6 @@
   <script>
 (()=>{const field=document.querySelector('.meteor-field');const marker=document.querySelector('#marker');const scene=document.querySelector('a-scene');let last=0;const playCompanion=()=>{const now=performance.now();if(now-last<700)return;last=now;const el=document.createElement('i');el.className='side-trail';el.style.setProperty('--sx','61cqw');el.style.setProperty('--sy','17cqw');el.style.setProperty('--sw','7cqw');field.append(el);const animation=el.animate([{transform:'translate(0,0) rotate(-28deg)',opacity:0},{transform:'translate(-9.5cqw,5.35cqw) rotate(-28deg)',opacity:.98,offset:.055},{transform:'translate(-16.5cqw,9.3cqw) rotate(-28deg)',opacity:.92,offset:.90},{transform:'translate(-19cqw,10.7cqw) rotate(-28deg)',opacity:.9,offset:.945},{transform:'translate(-29cqw,16.3cqw) rotate(-28deg)',opacity:0}],{duration:11000,fill:'forwards',easing:'linear'});animation.finished.catch(()=>{}).then(()=>el.remove())};marker.addEventListener('markerFound',playCompanion);scene.addEventListener('markerFound',playCompanion)})();
   </script>
+  <script src="meteor-flow.js"></script>
 </body>
 </html>
