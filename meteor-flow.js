@@ -5,6 +5,7 @@
   const lensElement=document.querySelector('.slow-zone');
   if(!field||!marker||!scene)return;
   const flow=document.createElement('div');flow.className='meteor-flow';field.append(flow);
+  const debug=document.createElement('aside');debug.className='ar-debug';debug.setAttribute('aria-live','polite');document.body.append(debug);
   const fast=[['12cqw','7cqw','12cqw'],['28cqw','17cqw','9cqw'],['18cqw','35cqw','10cqw'],['76cqw','6cqw','12cqw'],['85cqw','18cqw','10cqw'],['74cqw','36cqw','11cqw'],['88cqw','42cqw','9cqw'],['47cqw','5cqw','8cqw'],['10cqw','24cqw','8cqw'],['90cqw','29cqw','10cqw']];
   const lensRadius=10;
   let markerVisible=false,cycle=0,lastSeen=0,lensCenter={x:50,y:28};
@@ -46,5 +47,6 @@
   function seen(){lastSeen=performance.now();moveLens();setMarker(true)}
   marker.addEventListener('markerFound',seen);scene.addEventListener('markerFound',seen);
   const watch=()=>{const visible=Boolean(marker.object3D&&marker.object3D.visible);if(visible)seen();else if(markerVisible&&performance.now()-lastSeen>2800)setMarker(false);requestAnimationFrame(watch)};watch();
+  const renderDebug=()=>{const age=lastSeen?performance.now()-lastSeen:Infinity;const state=age<350?['인식됨','ok']:age<2800?['신호 약함','wait']:['미인식','lost'];debug.innerHTML=`<strong class="${state[1]}">AR ${state[0]}</strong><div>마지막 인식 ${Number.isFinite(age)?(age/1000).toFixed(1)+'초 전':'없음'}</div><div>렌즈 ${markerVisible?'켜짐':'꺼짐'}</div>`};setInterval(renderDebug,160);renderDebug();
   fastCycle();setInterval(fastCycle,2300);
 })();
