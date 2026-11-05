@@ -4,6 +4,7 @@
   const scene=document.querySelector('a-scene');
   const lensElement=document.querySelector('.slow-zone');
   if(!field||!marker||!scene)return;
+  document.body.classList.add('camera-feed-only');
   const flow=document.createElement('div');flow.className='meteor-flow';field.append(flow);
   const debug=document.createElement('aside');debug.className='ar-debug';debug.setAttribute('aria-live','polite');document.body.append(debug);
   const fast=[['12cqw','7cqw','12cqw'],['28cqw','17cqw','9cqw'],['18cqw','35cqw','10cqw'],['76cqw','6cqw','12cqw'],['85cqw','18cqw','10cqw'],['74cqw','36cqw','11cqw'],['88cqw','42cqw','9cqw'],['47cqw','5cqw','8cqw'],['10cqw','24cqw','8cqw'],['90cqw','29cqw','10cqw']];
