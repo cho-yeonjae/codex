@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>노을</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/3.4.8/aframe/build/aframe-ar-nft.js"></script>
+</head>
+<body>
+  <main class="artwork" aria-label="노을과 바다">
+    <img class="backdrop" src="assets/sunset-sea.png" alt="">
+    <canvas id="motion" aria-hidden="true"></canvas>
+    <div class="lens" aria-hidden="true"><div class="lens-glass"></div></div>
+  </main>
+
+  <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" renderer="alpha: true" vr-mode-ui="enabled: false">
+    <a-nft id="marker" type="nft" url="assets/nft/ar-image-target" emitevents="true" smooth="true" smoothCount="8" smoothTolerance="0.01" smoothThreshold="3">
+      <a-entity></a-entity>
+    </a-nft>
+    <a-entity camera></a-entity>
+  </a-scene>
+  <script src="script.js"></script>
+</body>
+</html>
