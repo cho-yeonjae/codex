@@ -45,7 +45,8 @@
   function setMarker(active){if(markerVisible===active)return;markerVisible=active;document.body.classList.toggle('marker-active',active);if(active){fastCycle()}else{flow.querySelectorAll('.lens-trail,.lens-hero').forEach(node=>{node._lensStop?.();node.getAnimations().forEach(animation=>animation.cancel());node.remove()})}}
   function placeLens(centerX,centerY){if(!lensElement)return;const x=Math.max(25,Math.min(75,centerX));const y=Math.max(18,Math.min(46,centerY));lensCenter={x,y};lensElement.style.left=`${(x-lensRadius).toFixed(2)}cqw`;lensElement.style.top=`${(y-lensRadius).toFixed(2)}cqw`}
   function moveLens(){const position=marker.object3D&&marker.object3D.position;if(!position)return;placeLens(50+position.x*16,28-position.y*13)}
-  function seen(){if(mouseLensMode)return;lastSeen=performance.now();moveLens();setMarker(true)}
+  function enableMouseLens(){if(mouseLensMode)return;mouseLensMode=true;document.body.classList.add('mouse-lens-mode');placeLens(50,28)}
+  function seen(){lastSeen=performance.now();enableMouseLens();setMarker(true)}
   marker.addEventListener('markerFound',seen);scene.addEventListener('markerFound',seen);
   const watch=()=>{if(!mouseLensMode){const visible=Boolean(marker.object3D&&marker.object3D.visible);if(visible)seen();else if(markerVisible&&performance.now()-lastSeen>2800)setMarker(false)}requestAnimationFrame(watch)};watch();
   artwork.addEventListener('pointermove',event=>{if(!mouseLensMode)return;const rect=artwork.getBoundingClientRect();placeLens((event.clientX-rect.left)/rect.width*100,(event.clientY-rect.top)/rect.width*100)});
