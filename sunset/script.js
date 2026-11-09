@@ -22,6 +22,7 @@
     pace: .00065 + (index % 7) * .00011,
     phase: index * 1.17
   }));
+  const allSparkles = [...particles, ...sunsetGlints];
 
   let width = 0, height = 0, dpr = 1;
   let lensOn = false, mouseMode = false, lastSeen = 0;
@@ -48,7 +49,7 @@
   const lensRadius = () => lens.getBoundingClientRect().width * .5;
 
   function drawSparkles(time, alpha = 1) {
-    [...particles, ...sunsetGlints].forEach((dot, index) => {
+    allSparkles.forEach((dot, index) => {
       const warmth = index >= particles.length ? 1.55 : 1;
       const pulse = .25 + .75 * Math.pow(Math.sin(time * dot.pace + dot.phase) * .5 + .5, 3);
       const x = dot.x * width, y = dot.y * height;
@@ -83,6 +84,28 @@
     });
   }
 
+  // Broad, broken foam bands move independently from the finer water lines.
+  function drawSurges(time, alpha = 1) {
+    const lanes = [.56, .65, .74, .83, .91];
+    lanes.forEach((level, index) => {
+      const amplitude = 9 + (index % 3) * 3.5;
+      context.beginPath();
+      for (let x = -28; x <= width + 30; x += 15) {
+        const y = height * level
+          + Math.sin(x * .009 - time * (.00165 + index * .00012) + index * 1.8) * amplitude
+          + Math.sin(x * .022 + time * .00097 + index) * amplitude * .66;
+        x === -28 ? context.moveTo(x, y) : context.lineTo(x, y);
+      }
+      context.lineCap = 'round';
+      context.setLineDash([16 + index * 2, 15 - Math.min(index, 4)]);
+      context.lineDashOffset = -time * (.018 + index * .003);
+      context.lineWidth = 1.7 + (index % 3) * .8;
+      context.strokeStyle = `rgba(244, 255, 251, ${(.13 + (index % 2) * .07) * alpha})`;
+      context.stroke();
+    });
+    context.setLineDash([]);
+  }
+
   function render(now) {
     // The whole illustration has a near-imperceptible current even without a lens.
     // Updating less often keeps the painted texture soft rather than mechanically wavy.
@@ -92,13 +115,13 @@
       render.lastCurrentUpdate = now;
     }
     context.clearRect(0, 0, width, height);
-    drawSparkles(now); drawWaves(now);
+    drawSparkles(now); drawWaves(now); drawSurges(now);
     if (lensOn) {
       const x = center.x * width, y = center.y * height, radius = lensRadius();
       context.save();
       context.beginPath(); context.arc(x, y, radius - 3, 0, Math.PI * 2); context.clip();
       // Only this clipped area uses a deliberately slower clock.
-      drawSparkles(now * .19, .9); drawWaves(now * .19, .9);
+      drawSparkles(now * .19, .9); drawWaves(now * .19, .9); drawSurges(now * .19, .9);
       context.restore();
     }
     requestAnimationFrame(render);
