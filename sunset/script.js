@@ -3,6 +3,8 @@
   const context = canvas.getContext('2d');
   const lens = document.querySelector('.lens');
   const artwork = document.querySelector('.artwork');
+  const current = document.querySelector('#water-current');
+  const displacement = document.querySelector('#water-displacement');
   const marker = document.querySelector('#marker');
   const scene = document.querySelector('a-scene');
   const particles = Array.from({ length: 70 }, (_, index) => ({
@@ -35,7 +37,7 @@
     lens.style.left = `${center.x * 100}%`;
     lens.style.top = `${center.y * 100}%`;
   };
-  const lensRadius = () => Math.min(width * .17, 195);
+  const lensRadius = () => lens.getBoundingClientRect().width * .5;
 
   function drawSparkles(time, alpha = 1) {
     particles.forEach((dot) => {
@@ -73,6 +75,13 @@
   }
 
   function render(now) {
+    // The whole illustration has a near-imperceptible current even without a lens.
+    // Updating less often keeps the painted texture soft rather than mechanically wavy.
+    if (!render.lastCurrentUpdate || now - render.lastCurrentUpdate > 110) {
+      current.setAttribute('baseFrequency', `${(.00105 + Math.sin(now * .00013) * .00018).toFixed(5)} ${(0.0105 + Math.cos(now * .00018) * .0015).toFixed(5)}`);
+      displacement.setAttribute('scale', (2.3 + Math.sin(now * .00026) * .9).toFixed(2));
+      render.lastCurrentUpdate = now;
+    }
     context.clearRect(0, 0, width, height);
     drawSparkles(now); drawWaves(now);
     if (lensOn) {

@@ -1,5 +1,5 @@
 :root {
-  --lens-size: min(34vw, 390px);
+  --lens-size: min(22vw, 270px);
   --glass-edge: rgba(255, 250, 241, .62);
 }
 
@@ -7,8 +7,9 @@
 html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #a5e3e2; }
 body { cursor: none; }
 .artwork, .backdrop, #motion { position: fixed; inset: 0; width: 100%; height: 100%; }
+.filters { position: fixed; width: 0; height: 0; overflow: hidden; }
 .artwork { overflow: hidden; background: #a5e3e2; isolation: isolate; }
-.backdrop { object-fit: cover; object-position: center; user-select: none; pointer-events: none; }
+.backdrop { object-fit: cover; object-position: center; user-select: none; pointer-events: none; filter: url(#soft-current); will-change: filter; }
 #motion { z-index: 2; pointer-events: none; }
 
 .lens {
@@ -46,4 +47,4 @@ body { cursor: none; }
 a-scene { position: fixed !important; inset: 0 !important; z-index: 0 !important; pointer-events: none !important; }
 a-scene canvas, a-scene video { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
 
-@media (max-width: 700px) { :root { --lens-size: min(58vw, 350px); } }
+@media (max-width: 700px) { :root { --lens-size: min(42vw, 250px); } }

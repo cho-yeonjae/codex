@@ -9,6 +9,12 @@
   <script src="https://raw.githack.com/AR-js-org/AR.js/3.4.8/aframe/build/aframe-ar-nft.js"></script>
 </head>
 <body>
+  <svg class="filters" aria-hidden="true" focusable="false">
+    <filter id="soft-current" x="-3%" y="-3%" width="106%" height="106%">
+      <feTurbulence id="water-current" type="fractalNoise" baseFrequency="0.0012 0.011" numOctaves="1" seed="11" result="noise"></feTurbulence>
+      <feDisplacementMap id="water-displacement" in="SourceGraphic" in2="noise" scale="2.8" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+    </filter>
+  </svg>
   <main class="artwork" aria-label="노을과 바다">
     <img class="backdrop" src="assets/sunset-sea.png" alt="">
     <canvas id="motion" aria-hidden="true"></canvas>
