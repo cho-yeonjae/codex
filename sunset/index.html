@@ -6,7 +6,7 @@
   <title>노을</title>
   <link rel="stylesheet" href="styles.css?v=cc78892">
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-  <script src="https://raw.githack.com/AR-js-org/AR.js/3.4.8/aframe/build/aframe-ar-nft.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/3.4.8/aframe/build/aframe-ar.js"></script>
 </head>
 <body>
   <svg class="filters" aria-hidden="true" focusable="false">
@@ -21,10 +21,10 @@
     <div class="lens" aria-hidden="true"><div class="lens-glass"></div></div>
   </main>
 
-  <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" renderer="alpha: true" vr-mode-ui="enabled: false">
-    <a-nft id="marker" type="nft" url="assets/nft/ar-image-target" emitevents="true" smooth="true" smoothCount="8" smoothTolerance="0.01" smoothThreshold="3">
+  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono; patternRatio: 0.65;" renderer="alpha: true" vr-mode-ui="enabled: false">
+    <a-marker id="marker" type="pattern" url="assets/boo-marker.patt" emitevents="true" smooth="true" smoothCount="8" smoothTolerance="0.01" smoothThreshold="3">
       <a-entity></a-entity>
-    </a-nft>
+    </a-marker>
     <a-entity camera></a-entity>
   </a-scene>
   <script src="script.js?v=cc78892"></script>
