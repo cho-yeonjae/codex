@@ -9,7 +9,7 @@ body { cursor: none; }
 .artwork, .backdrop, #motion { position: fixed; inset: 0; width: 100%; height: 100%; }
 .filters { position: fixed; width: 0; height: 0; overflow: hidden; }
 .artwork { overflow: hidden; background: #a5e3e2; isolation: isolate; }
-.backdrop { object-fit: cover; object-position: center; user-select: none; pointer-events: none; filter: url(#soft-current); will-change: filter; }
+.backdrop { object-fit: cover; object-position: center; user-select: none; pointer-events: none; filter: none; }
 #motion { z-index: 2; pointer-events: none; }
 
 .lens {

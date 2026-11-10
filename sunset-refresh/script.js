@@ -177,13 +177,8 @@
   }
 
   function render(now) {
-    // The whole illustration has a near-imperceptible current even without a lens.
-    // Updating less often keeps the painted texture soft rather than mechanically wavy.
-    if (!render.lastCurrentUpdate || now - render.lastCurrentUpdate > 110) {
-      current.setAttribute('baseFrequency', `${(.0011 + Math.sin(now * .0002) * .00028).toFixed(5)} ${(0.012 + Math.cos(now * .00027) * .0022).toFixed(5)}`);
-      displacement.setAttribute('scale', (4.5 + Math.sin(now * .00042) * 1.65).toFixed(2));
-      render.lastCurrentUpdate = now;
-    }
+    // Canvas layers supply the movement. Keeping the original artwork static
+    // prevents Safari from intermittently repainting the full screen.
     const drawScene = (time) => {
       drawSparkles(time); drawSunHaze(time); drawWaves(time); drawSurges(time); drawWaterStrokes(time);
     };
