@@ -81,14 +81,22 @@
       context.beginPath();
       for (let x = -20; x <= width + 25; x += 12) {
         const y = yBase + Math.sin(x * .012 + time * (.0011 + index * .000075) + index) * amplitude
-          + Math.sin(x * .027 - time * .00068 + index * 2) * amplitude * .58;
+          + Math.sin(x * .027 - time * .00068 + index * 2) * amplitude * .58
+          + Math.sin(x * .19 + time * .0012 + index) * .75;
         x === -20 ? context.moveTo(x, y) : context.lineTo(x, y);
       }
       context.strokeStyle = index < 3
-        ? `rgba(255, 236, 205, ${(.18 + (index % 2) * .06) * alpha})`
-        : `rgba(240, 255, 249, ${(.20 + (index % 2) * .07) * alpha})`;
-      context.lineWidth = 2.25 + (index % 3) * .85;
+        ? `rgba(235, 215, 198, ${(.22 + (index % 2) * .06) * alpha})`
+        : `rgba(207, 235, 235, ${(.24 + (index % 2) * .07) * alpha})`;
+      context.lineWidth = 3.4 + (index % 3) * 1.1;
       context.stroke();
+      context.save();
+      context.setLineDash([1, 5]);
+      context.lineDashOffset = -time * (.012 + index * .001);
+      context.lineWidth *= .52;
+      context.strokeStyle = `rgba(248, 251, 241, ${.30 * alpha})`;
+      context.stroke();
+      context.restore();
     });
   }
 
@@ -105,10 +113,10 @@
         x === -28 ? context.moveTo(x, y) : context.lineTo(x, y);
       }
       context.lineCap = 'round';
-      context.setLineDash([16 + index * 2, 15 - Math.min(index, 4)]);
+      context.setLineDash([5 + index * 2, 8 + (index % 3) * 2]);
       context.lineDashOffset = -time * (.018 + index * .003);
-      context.lineWidth = 3.25 + (index % 3) * 1.05;
-      context.strokeStyle = `rgba(244, 255, 251, ${(.20 + (index % 2) * .09) * alpha})`;
+      context.lineWidth = 4.7 + (index % 3) * 1.3;
+      context.strokeStyle = `rgba(228, 243, 235, ${(.24 + (index % 2) * .09) * alpha})`;
       context.stroke();
     });
     context.setLineDash([]);
@@ -135,7 +143,7 @@
       context.moveTo(x, y);
       context.quadraticCurveTo(x + length * .42, y - 10 - stroke.tone * 2, x + length, y + 3 + stroke.tone);
       context.strokeStyle = gradient;
-      context.lineWidth = 2.7 + (stroke.tone % 3) * 1.05;
+      context.lineWidth = 4.1 + (stroke.tone % 3) * 1.35;
       context.lineCap = 'round';
       context.stroke();
     });
