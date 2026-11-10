@@ -42,6 +42,7 @@
   let width = 0, height = 0, dpr = 1;
   let lensOn = false, mouseMode = false, lastSeen = 0;
   const center = { x: .5, y: .46 };
+  const markerPoint = new THREE.Vector3();
 
   const resize = () => {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -62,6 +63,16 @@
     lens.style.top = `${center.y * 100}%`;
   };
   const lensRadius = () => lens.getBoundingClientRect().width * .5;
+  const followMarker = () => {
+    if (!marker.object3D || !scene.camera) return;
+    marker.object3D.getWorldPosition(markerPoint);
+    markerPoint.project(scene.camera);
+    const x = (markerPoint.x + 1) * .5;
+    const y = (1 - markerPoint.y) * .5;
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return;
+    // A small easing removes recognition jitter while preserving direct movement.
+    placeLens(center.x + (x - center.x) * .18, center.y + (y - center.y) * .18);
+  };
 
   function drawSparkles(time, alpha = 1) {
     allSparkles.forEach((dot, index) => {
@@ -200,13 +211,14 @@
     requestAnimationFrame(render);
   }
 
-  function found() { lastSeen = performance.now(); mouseMode = false; setLens(true); }
-  marker.addEventListener('markerFound', found);
-  scene.addEventListener('markerFound', found);
+  function found() { lastSeen = performance.now(); setLens(true); }
+  function markerFound() { mouseMode = false; found(); }
+  marker.addEventListener('markerFound', markerFound);
+  scene.addEventListener('markerFound', markerFound);
   function watchMarker() {
     if (!mouseMode) {
       const visible = Boolean(marker.object3D && marker.object3D.visible);
-      if (visible) found();
+      if (visible) { found(); followMarker(); }
       else if (lensOn && performance.now() - lastSeen > 2200) setLens(false);
     }
     requestAnimationFrame(watchMarker);
