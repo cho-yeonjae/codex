@@ -23,6 +23,14 @@
     phase: index * 1.17
   }));
   const allSparkles = [...particles, ...sunsetGlints];
+  const waterStrokes = Array.from({ length: 38 }, (_, index) => ({
+    y: .42 + ((index * 13.7) % 53) / 100,
+    width: .10 + (index % 8) * .029,
+    speed: .000055 + (index % 7) * .000017,
+    offset: index * .137,
+    phase: index * .83,
+    tone: index % 5
+  }));
 
   let width = 0, height = 0, dpr = 1;
   let lensOn = false, mouseMode = false, lastSeen = 0;
@@ -106,6 +114,34 @@
     context.setLineDash([]);
   }
 
+  // Short painted strokes carry the image's own horizontal sea texture across the frame.
+  function drawWaterStrokes(time, alpha = 1) {
+    const colours = [
+      [244, 255, 250], [188, 243, 249], [255, 230, 193], [135, 218, 236], [255, 246, 225]
+    ];
+    context.save();
+    context.globalCompositeOperation = 'screen';
+    waterStrokes.forEach((stroke) => {
+      const length = width * stroke.width;
+      const x = ((time * stroke.speed + stroke.offset) % 1) * (width + length * 1.4) - length * 1.2;
+      const y = height * stroke.y + Math.sin(time * .00155 + stroke.phase) * (5 + stroke.tone * 1.2);
+      const colour = colours[stroke.tone];
+      const gradient = context.createLinearGradient(x, y, x + length, y);
+      gradient.addColorStop(0, `rgba(${colour[0]}, ${colour[1]}, ${colour[2]}, 0)`);
+      gradient.addColorStop(.18, `rgba(${colour[0]}, ${colour[1]}, ${colour[2]}, ${.24 * alpha})`);
+      gradient.addColorStop(.72, `rgba(${colour[0]}, ${colour[1]}, ${colour[2]}, ${.32 * alpha})`);
+      gradient.addColorStop(1, `rgba(${colour[0]}, ${colour[1]}, ${colour[2]}, 0)`);
+      context.beginPath();
+      context.moveTo(x, y);
+      context.quadraticCurveTo(x + length * .42, y - 10 - stroke.tone * 2, x + length, y + 3 + stroke.tone);
+      context.strokeStyle = gradient;
+      context.lineWidth = 1.2 + (stroke.tone % 3) * .75;
+      context.lineCap = 'round';
+      context.stroke();
+    });
+    context.restore();
+  }
+
   function render(now) {
     // The whole illustration has a near-imperceptible current even without a lens.
     // Updating less often keeps the painted texture soft rather than mechanically wavy.
@@ -115,13 +151,13 @@
       render.lastCurrentUpdate = now;
     }
     context.clearRect(0, 0, width, height);
-    drawSparkles(now); drawWaves(now); drawSurges(now);
+    drawSparkles(now); drawWaves(now); drawSurges(now); drawWaterStrokes(now);
     if (lensOn) {
       const x = center.x * width, y = center.y * height, radius = lensRadius();
       context.save();
       context.beginPath(); context.arc(x, y, radius - 3, 0, Math.PI * 2); context.clip();
       // Only this clipped area uses a deliberately slower clock.
-      drawSparkles(now * .19, .9); drawWaves(now * .19, .9); drawSurges(now * .19, .9);
+      drawSparkles(now * .19, .9); drawWaves(now * .19, .9); drawSurges(now * .19, .9); drawWaterStrokes(now * .19, .9);
       context.restore();
     }
     requestAnimationFrame(render);
