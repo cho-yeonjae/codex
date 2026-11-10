@@ -1,0 +1,51 @@
+:root {
+  --lens-size: min(22vw, 270px);
+  --glass-edge: rgba(255, 250, 241, .62);
+}
+
+* { box-sizing: border-box; }
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #a5e3e2; }
+body { cursor: none; }
+.artwork, .backdrop, #motion { position: fixed; inset: 0; width: 100%; height: 100%; }
+.filters { position: fixed; width: 0; height: 0; overflow: hidden; }
+.artwork { overflow: hidden; background: #a5e3e2; isolation: isolate; }
+.backdrop { object-fit: cover; object-position: center; user-select: none; pointer-events: none; filter: url(#soft-current); will-change: filter; }
+#motion { z-index: 2; pointer-events: none; }
+
+.lens {
+  position: fixed;
+  z-index: 3;
+  width: var(--lens-size);
+  aspect-ratio: 1;
+  left: 50%; top: 46%;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.88);
+  border-radius: 50%;
+  pointer-events: none;
+  overflow: hidden;
+  transition: opacity 420ms ease, transform 620ms cubic-bezier(.2,.78,.2,1);
+  background:
+    radial-gradient(circle at 31% 25%, rgba(255,255,255,.28), transparent 18%),
+    radial-gradient(circle at 67% 79%, rgba(126,227,234,.12), transparent 53%),
+    rgba(255,255,255,.025);
+  box-shadow:
+    inset 13px 12px 19px rgba(255,255,255,.18),
+    inset -13px -17px 24px rgba(67,170,191,.12),
+    inset 0 0 0 2px var(--glass-edge),
+    0 2px 20px rgba(101,174,184,.15);
+  backdrop-filter: saturate(1.12) contrast(1.03) blur(.18px);
+  -webkit-backdrop-filter: saturate(1.12) contrast(1.03) blur(.18px);
+}
+.lens.is-active { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.lens::before, .lens::after {
+  content: ''; position: absolute; border-radius: 50%; pointer-events: none;
+}
+.lens::before { inset: 6px; border: 1px solid rgba(255,255,255,.28); }
+.lens::after { width: 31%; height: 13%; left: 16%; top: 12%; transform: rotate(-27deg); background: rgba(255,255,255,.24); filter: blur(5px); }
+.lens-glass { position: absolute; inset: 17%; border-radius: 50%; border-top: 1px solid rgba(255,248,238,.15); }
+
+/* AR is only a detector; the camera image stays behind the illustration. */
+a-scene { position: fixed !important; inset: 0 !important; z-index: 0 !important; pointer-events: none !important; }
+a-scene canvas, a-scene video { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+
+@media (max-width: 700px) { :root { --lens-size: min(42vw, 250px); } }
