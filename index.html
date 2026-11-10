@@ -2,7 +2,9 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="stylesheet" href="meteor-flow.css">
+  <meta http-equiv="Cache-Control" content="no-store, max-age=0">
+  <script>if(!new URLSearchParams(location.search).has('build'))location.replace(`${location.pathname}?build=sync-20261110`);</script>
+  <link rel="stylesheet" href="meteor-flow.css?v=sync-20261110">
   <style>
     html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#06122e}
     body{display:grid;place-items:center}
@@ -13,7 +15,7 @@
     .stars i:before{width:250%;height:1px}.stars i:after{height:250%;width:1px}
     @keyframes illustratedTwinkle{0%,100%{opacity:.2;transform:scale(.58)}48%{opacity:.95;transform:scale(1.08)}60%{opacity:.65;transform:scale(.86)}}
     .slow-zone{position:absolute;left:42.5cqw;top:20.625cqw;width:15cqw;aspect-ratio:1;border-radius:50%;z-index:2;pointer-events:none;border:1px solid rgba(255,239,174,.16);box-shadow:inset 0 0 2cqw rgba(255,222,137,.06),0 0 1.5cqw rgba(255,214,118,.05)}
-    .meteor-group{position:absolute;width:min(33.6cqw,486px);aspect-ratio:2.37/1;left:50cqw;top:8cqw;opacity:0;pointer-events:none;z-index:4;mix-blend-mode:screen}
+    .meteor-group{position:absolute;width:min(26.8cqw,390px);aspect-ratio:2.37/1;left:50cqw;top:8cqw;opacity:0;pointer-events:none;z-index:4;mix-blend-mode:screen}
     .meteor-field{position:absolute;inset:0;z-index:4;pointer-events:none;clip-path:polygon(0 0,100% 0,100% 71%,96% 72%,90% 75%,84% 74%,79% 72%,73% 72%,67% 77%,61% 77%,55% 78%,50% 80%,45% 78%,40% 75%,35% 76%,29% 75%,24% 70%,18% 70%,14% 68%,10% 59%,7% 52%,4% 54%,0 47%)}
     .foreground-terrain{position:absolute;inset:0;z-index:6;pointer-events:none;background:url('assets/night-sky.png') center/cover no-repeat;clip-path:polygon(0 47%,4% 54%,7% 52%,10% 59%,14% 68%,18% 70%,24% 70%,29% 75%,35% 76%,40% 75%,45% 78%,50% 80%,55% 78%,61% 77%,67% 77%,73% 72%,79% 72%,84% 74%,90% 75%,96% 72%,100% 71%,100% 100%,0 100%)}
     .terrain-mask{position:absolute;inset:0;width:100%;height:100%;z-index:10;display:block;pointer-events:none}
@@ -115,6 +117,6 @@
   <script>
 (()=>{const field=document.querySelector('.meteor-field');const marker=document.querySelector('#marker');const scene=document.querySelector('a-scene');let last=0;const playCompanion=()=>{const now=performance.now();if(now-last<700)return;last=now;const el=document.createElement('i');el.className='side-trail';el.style.setProperty('--sx','61cqw');el.style.setProperty('--sy','17cqw');el.style.setProperty('--sw','7cqw');field.append(el);const animation=el.animate([{transform:'translate(0,0) rotate(-28deg)',opacity:0},{transform:'translate(-9.5cqw,5.35cqw) rotate(-28deg)',opacity:.98,offset:.055},{transform:'translate(-16.5cqw,9.3cqw) rotate(-28deg)',opacity:.92,offset:.90},{transform:'translate(-19cqw,10.7cqw) rotate(-28deg)',opacity:.9,offset:.945},{transform:'translate(-29cqw,16.3cqw) rotate(-28deg)',opacity:0}],{duration:11000,fill:'forwards',easing:'linear'});animation.finished.catch(()=>{}).then(()=>el.remove())};marker.addEventListener('markerFound',playCompanion);scene.addEventListener('markerFound',playCompanion)})();
   </script>
-  <script src="meteor-flow.js"></script>
+  <script src="meteor-flow.js?v=sync-20261110"></script>
 </body>
 </html>
