@@ -133,6 +133,25 @@
   <script>
 (()=>{const field=document.querySelector('.meteor-field');const marker=document.querySelector('#marker');const scene=document.querySelector('a-scene');let last=0;const playCompanion=()=>{const now=performance.now();if(now-last<700)return;last=now;const el=document.createElement('i');el.className='side-trail';el.style.setProperty('--sx','61cqw');el.style.setProperty('--sy','17cqw');el.style.setProperty('--sw','7cqw');field.append(el);const animation=el.animate([{transform:'translate(0,0) rotate(-28deg)',opacity:0},{transform:'translate(-9.5cqw,5.35cqw) rotate(-28deg)',opacity:.98,offset:.055},{transform:'translate(-16.5cqw,9.3cqw) rotate(-28deg)',opacity:.92,offset:.90},{transform:'translate(-19cqw,10.7cqw) rotate(-28deg)',opacity:.9,offset:.945},{transform:'translate(-29cqw,16.3cqw) rotate(-28deg)',opacity:0}],{duration:11000,fill:'forwards',easing:'linear'});animation.finished.catch(()=>{}).then(()=>el.remove())};marker.addEventListener('markerFound',playCompanion);scene.addEventListener('markerFound',playCompanion)})();
   </script>
+  <script>
+  (()=>{
+    const zone=document.querySelector('.slow-zone');
+    const art=document.querySelector('.artwork');
+    const marker=document.querySelector('#marker');
+    const scene=document.querySelector('a-scene');
+    const point=new THREE.Vector3();
+    let x=.5,y=.5;
+    const follow=()=>{
+      if(marker.object3D&&marker.object3D.visible&&scene.camera){
+        marker.object3D.getWorldPosition(point); point.project(scene.camera);
+        const nextX=(point.x+1)*.5, nextY=(1-point.y)*.5;
+        if(Number.isFinite(nextX)&&Number.isFinite(nextY)){x+=(nextX-x)*.18;y+=(nextY-y)*.18;const w=zone.offsetWidth,h=zone.offsetHeight;zone.style.left=Math.max(0,Math.min(art.clientWidth-w,x*art.clientWidth-w*.5))+'px';zone.style.top=Math.max(0,Math.min(art.clientHeight-h,y*art.clientHeight-h*.5))+'px';}
+      }
+      requestAnimationFrame(follow);
+    };
+    follow();
+  })();
+  </script>
   <script src="meteor-flow.js?v=legacy-safari-c3"></script>
 </body>
 </html>
