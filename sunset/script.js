@@ -85,9 +85,9 @@
         x === -20 ? context.moveTo(x, y) : context.lineTo(x, y);
       }
       context.strokeStyle = index < 3
-        ? `rgba(255, 236, 205, ${(.12 + (index % 2) * .04) * alpha})`
-        : `rgba(240, 255, 249, ${(.13 + (index % 2) * .05) * alpha})`;
-      context.lineWidth = 1.1 + (index % 3) * .4;
+        ? `rgba(255, 236, 205, ${(.18 + (index % 2) * .06) * alpha})`
+        : `rgba(240, 255, 249, ${(.20 + (index % 2) * .07) * alpha})`;
+      context.lineWidth = 2.25 + (index % 3) * .85;
       context.stroke();
     });
   }
@@ -107,8 +107,8 @@
       context.lineCap = 'round';
       context.setLineDash([16 + index * 2, 15 - Math.min(index, 4)]);
       context.lineDashOffset = -time * (.018 + index * .003);
-      context.lineWidth = 1.7 + (index % 3) * .8;
-      context.strokeStyle = `rgba(244, 255, 251, ${(.13 + (index % 2) * .07) * alpha})`;
+      context.lineWidth = 3.25 + (index % 3) * 1.05;
+      context.strokeStyle = `rgba(244, 255, 251, ${(.20 + (index % 2) * .09) * alpha})`;
       context.stroke();
     });
     context.setLineDash([]);
@@ -128,14 +128,14 @@
       const colour = colours[stroke.tone];
       const gradient = context.createLinearGradient(x, y, x + length, y);
       gradient.addColorStop(0, `rgba(${colour[0]}, ${colour[1]}, ${colour[2]}, 0)`);
-      gradient.addColorStop(.18, `rgba(${colour[0]}, ${colour[1]}, ${colour[2]}, ${.24 * alpha})`);
-      gradient.addColorStop(.72, `rgba(${colour[0]}, ${colour[1]}, ${colour[2]}, ${.32 * alpha})`);
+      gradient.addColorStop(.18, `rgba(${colour[0]}, ${colour[1]}, ${colour[2]}, ${.38 * alpha})`);
+      gradient.addColorStop(.72, `rgba(${colour[0]}, ${colour[1]}, ${colour[2]}, ${.48 * alpha})`);
       gradient.addColorStop(1, `rgba(${colour[0]}, ${colour[1]}, ${colour[2]}, 0)`);
       context.beginPath();
       context.moveTo(x, y);
       context.quadraticCurveTo(x + length * .42, y - 10 - stroke.tone * 2, x + length, y + 3 + stroke.tone);
       context.strokeStyle = gradient;
-      context.lineWidth = 1.2 + (stroke.tone % 3) * .75;
+      context.lineWidth = 2.7 + (stroke.tone % 3) * 1.05;
       context.lineCap = 'round';
       context.stroke();
     });
