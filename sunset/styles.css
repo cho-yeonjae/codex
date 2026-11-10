@@ -34,6 +34,7 @@ body { cursor: none; }
     inset 0 0 0 2px var(--glass-edge),
     0 2px 20px rgba(101,174,184,.15);
   backdrop-filter: saturate(1.12) contrast(1.03) blur(.18px);
+  -webkit-backdrop-filter: saturate(1.12) contrast(1.03) blur(.18px);
 }
 .lens.is-active { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 .lens::before, .lens::after {

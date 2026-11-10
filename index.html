@@ -3,8 +3,8 @@
 <head>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-store, max-age=0">
-  <script>if(!new URLSearchParams(location.search).has('build'))location.replace(`${location.pathname}?build=sync-20261110`);</script>
-  <link rel="stylesheet" href="meteor-flow.css?v=sync-20261110">
+  <script>var build='legacy-safari-c3';if(new URLSearchParams(location.search).get('build')!==build)location.replace(location.pathname+'?build='+build);</script>
+  <link rel="stylesheet" href="meteor-flow.css?v=legacy-safari-c3">
   <style>
     html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#06122e}
     body{display:grid;place-items:center}
@@ -77,6 +77,18 @@
     .slow-zone::before{border-width:1.45px}
     .slow-zone::after{border-width:1.15px}
   </style>
+  <style>
+    /* Safari on macOS 10.15 does not support container-query units (cqw). */
+    @supports not (width: 1cqw) {
+      .artwork{width:100vw;height:56.25vw;max-height:100vh}
+      .slow-zone{left:42.5%;top:20.625%;width:15%}
+      .meteor-group{width:26.8%;left:50%;top:8%}
+      .side-trail{height:7px}
+    }
+    @supports not (aspect-ratio: 1 / 1) {
+      .artwork{height:56.25vw;max-height:100vh}
+    }
+  </style>
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   <script src="https://raw.githack.com/AR-js-org/AR.js/3.4.8/aframe/build/aframe-ar.js"></script>
   <script>AFRAME.registerComponent('meteor-trigger',{init:function(){const fire=()=>{if(typeof window.playMeteor==='function')window.playMeteor();else window.__meteorQueued=true};this.el.addEventListener('markerFound',fire);this.el.sceneEl.addEventListener('markerFound',fire)}})</script>
@@ -117,6 +129,6 @@
   <script>
 (()=>{const field=document.querySelector('.meteor-field');const marker=document.querySelector('#marker');const scene=document.querySelector('a-scene');let last=0;const playCompanion=()=>{const now=performance.now();if(now-last<700)return;last=now;const el=document.createElement('i');el.className='side-trail';el.style.setProperty('--sx','61cqw');el.style.setProperty('--sy','17cqw');el.style.setProperty('--sw','7cqw');field.append(el);const animation=el.animate([{transform:'translate(0,0) rotate(-28deg)',opacity:0},{transform:'translate(-9.5cqw,5.35cqw) rotate(-28deg)',opacity:.98,offset:.055},{transform:'translate(-16.5cqw,9.3cqw) rotate(-28deg)',opacity:.92,offset:.90},{transform:'translate(-19cqw,10.7cqw) rotate(-28deg)',opacity:.9,offset:.945},{transform:'translate(-29cqw,16.3cqw) rotate(-28deg)',opacity:0}],{duration:11000,fill:'forwards',easing:'linear'});animation.finished.catch(()=>{}).then(()=>el.remove())};marker.addEventListener('markerFound',playCompanion);scene.addEventListener('markerFound',playCompanion)})();
   </script>
-  <script src="meteor-flow.js?v=sync-20261110"></script>
+  <script src="meteor-flow.js?v=legacy-safari-c3"></script>
 </body>
 </html>
