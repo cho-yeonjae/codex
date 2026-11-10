@@ -31,6 +31,13 @@
     phase: index * .83,
     tone: index % 5
   }));
+  const sunLines = Array.from({ length: 32 }, (_, index) => ({
+    y: .19 + ((index * 7.9) % 23) / 100,
+    width: .12 + (index % 7) * .042,
+    offset: index * .19,
+    phase: index * .62,
+    tilt: (index % 4 - 1.5) * 2.1
+  }));
 
   let width = 0, height = 0, dpr = 1;
   let lensOn = false, mouseMode = false, lastSeen = 0;
@@ -91,16 +98,14 @@
       context.lineWidth = 3.4 + (index % 3) * 1.1;
       context.stroke();
       context.save();
-      context.setLineDash([1, 5]);
-      context.lineDashOffset = -time * (.012 + index * .001);
-      context.lineWidth *= .52;
-      context.strokeStyle = `rgba(248, 251, 241, ${.30 * alpha})`;
+      context.lineWidth *= .38;
+      context.strokeStyle = `rgba(248, 251, 241, ${.22 * alpha})`;
       context.stroke();
       context.restore();
     });
   }
 
-  // Broad, broken foam bands move independently from the finer water lines.
+  // Broad, textured foam bands move independently from the finer water lines.
   function drawSurges(time, alpha = 1) {
     const lanes = [.56, .65, .74, .83, .91];
     lanes.forEach((level, index) => {
@@ -113,13 +118,10 @@
         x === -28 ? context.moveTo(x, y) : context.lineTo(x, y);
       }
       context.lineCap = 'round';
-      context.setLineDash([5 + index * 2, 8 + (index % 3) * 2]);
-      context.lineDashOffset = -time * (.018 + index * .003);
       context.lineWidth = 4.7 + (index % 3) * 1.3;
       context.strokeStyle = `rgba(228, 243, 235, ${(.24 + (index % 2) * .09) * alpha})`;
       context.stroke();
     });
-    context.setLineDash([]);
   }
 
   // Short painted strokes carry the image's own horizontal sea texture across the frame.
@@ -150,6 +152,30 @@
     context.restore();
   }
 
+  // Crossing horizontal pastel marks make the sunset's reflection bloom outward.
+  function drawSunHaze(time, alpha = 1) {
+    context.save();
+    context.globalCompositeOperation = 'screen';
+    sunLines.forEach((line, index) => {
+      const length = width * line.width;
+      const x = width * (.5 - line.width * .5) + Math.sin(time * .00036 + line.offset) * width * .07;
+      const y = height * line.y + Math.sin(time * .0011 + line.phase) * 3;
+      const gradient = context.createLinearGradient(x, y, x + length, y);
+      gradient.addColorStop(0, 'rgba(255, 207, 175, 0)');
+      gradient.addColorStop(.22, `rgba(255, 221, 181, ${.28 * alpha})`);
+      gradient.addColorStop(.55, `rgba(255, 245, 211, ${.42 * alpha})`);
+      gradient.addColorStop(1, 'rgba(255, 194, 167, 0)');
+      context.beginPath();
+      context.moveTo(x, y);
+      context.quadraticCurveTo(x + length * .48, y + line.tilt, x + length, y - line.tilt * .7);
+      context.strokeStyle = gradient;
+      context.lineWidth = 1.5 + (index % 3) * .75;
+      context.lineCap = 'round';
+      context.stroke();
+    });
+    context.restore();
+  }
+
   function render(now) {
     // The whole illustration has a near-imperceptible current even without a lens.
     // Updating less often keeps the painted texture soft rather than mechanically wavy.
@@ -158,15 +184,23 @@
       displacement.setAttribute('scale', (4.5 + Math.sin(now * .00042) * 1.65).toFixed(2));
       render.lastCurrentUpdate = now;
     }
+    const drawScene = (time) => {
+      drawSparkles(time); drawSunHaze(time); drawWaves(time); drawSurges(time); drawWaterStrokes(time);
+    };
     context.clearRect(0, 0, width, height);
-    drawSparkles(now); drawWaves(now); drawSurges(now); drawWaterStrokes(now);
     if (lensOn) {
       const x = center.x * width, y = center.y * height, radius = lensRadius();
       context.save();
-      context.beginPath(); context.arc(x, y, radius - 3, 0, Math.PI * 2); context.clip();
-      // Only this clipped area uses a deliberately slower clock.
-      drawSparkles(now * .19, .9); drawWaves(now * .19, .9); drawSurges(now * .19, .9); drawWaterStrokes(now * .19, .9);
+      context.beginPath(); context.rect(0, 0, width, height); context.arc(x, y, radius - 3, 0, Math.PI * 2, true); context.clip('evenodd');
+      drawScene(now);
       context.restore();
+      context.save();
+      context.beginPath(); context.arc(x, y, radius - 3, 0, Math.PI * 2); context.clip();
+      // Only this clipped area receives the much slower clock.
+      drawSparkles(now * .055, .9); drawSunHaze(now * .055, .9); drawWaves(now * .055, .9); drawSurges(now * .055, .9); drawWaterStrokes(now * .055, .9);
+      context.restore();
+    } else {
+      drawScene(now);
     }
     requestAnimationFrame(render);
   }
