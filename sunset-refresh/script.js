@@ -220,8 +220,9 @@
   function watchMarker() {
     if (!mouseMode) {
       const visible = Boolean(marker.object3D && marker.object3D.visible);
+      // If tracking drops for a moment, keep the last valid lens position.
+      // AR cameras regularly miss a few frames while the marker is moving.
       if (visible) { found(); followMarker(); }
-      else if (lensOn && performance.now() - lastSeen > 2200) setLens(false);
     }
     requestAnimationFrame(watchMarker);
   }
