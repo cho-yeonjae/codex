@@ -144,7 +144,7 @@
     const follow=()=>{
       if(marker.object3D&&marker.object3D.visible&&scene.camera){
         marker.object3D.getWorldPosition(point); point.project(scene.camera);
-        const nextX=(point.x+1)*.5, nextY=(1-point.y)*.5;
+        const nextX=1-(point.x+1)*.5, nextY=(1-point.y)*.5;
         if(Number.isFinite(nextX)&&Number.isFinite(nextY)){x+=(nextX-x)*.18;y+=(nextY-y)*.18;const w=zone.offsetWidth,h=zone.offsetHeight;zone.style.left=Math.max(0,Math.min(art.clientWidth-w,x*art.clientWidth-w*.5))+'px';zone.style.top=Math.max(0,Math.min(art.clientHeight-h,y*art.clientHeight-h*.5))+'px';}
       }
       requestAnimationFrame(follow);

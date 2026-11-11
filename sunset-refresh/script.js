@@ -67,7 +67,9 @@
     if (!marker.object3D || !scene.camera) return;
     marker.object3D.getWorldPosition(markerPoint);
     markerPoint.project(scene.camera);
-    const x = (markerPoint.x + 1) * .5;
+    // iMac's camera preview is mirrored, so the horizontal marker coordinate
+    // must be mirrored once more for the on-screen lens to follow the hand.
+    const x = 1 - (markerPoint.x + 1) * .5;
     const y = (1 - markerPoint.y) * .5;
     if (!Number.isFinite(x) || !Number.isFinite(y)) return;
     // A small easing removes recognition jitter while preserving direct movement.
